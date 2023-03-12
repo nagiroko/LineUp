@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Camera cam;
+    bool equal = false;
     void Start()
     {
         cam = Camera.main;
@@ -20,14 +21,32 @@ public class Player : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(mousePos2d, Vector2.zero);
             if(hit.collider != null)
             {
-                Debug.Log(hit.collider.gameObject.name);
+                if(hit.collider.gameObject.tag == "Criminal")
+                {
+                    Criminal c = hit.collider.GetComponent<Criminal>();
+                    Description d = GameObject.FindGameObjectWithTag("Description").GetComponent<Description>();
+                    Check(c.CrimNum,d.DescriptNum);
+                    if(equal == true)
+                    {
+                        Destroy(hit.collider.gameObject);
+                        Destroy(d.gameObject);
+                        equal = false;
+                    }
+                    else
+                    {
+                        Debug.Log("Not Eqal");
+                    }
+                }
             }
         }
     }
 
-    void Check()
+    void Check(int crim,int des)
     {
-      
+        if(crim == des)
+        {
+            equal = true;
+        }
 
     }
 
