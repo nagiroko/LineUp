@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
                     {
                         Destroy(hit.collider.gameObject);
                         Destroy(d.gameObject);
+                        DescSpawner spawn = GameObject.FindGameObjectWithTag("Spawner").GetComponent<DescSpawner>();
+                        spawn.Check();
                         equal = false;
                     }
                     else

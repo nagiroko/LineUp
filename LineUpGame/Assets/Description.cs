@@ -15,4 +15,9 @@ public class Description : MonoBehaviour
     {
         
     }
+
+     void OnDestroy()
+    {
+
+    }
 }
