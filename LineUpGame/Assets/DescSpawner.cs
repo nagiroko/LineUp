@@ -7,10 +7,15 @@ public class DescSpawner : MonoBehaviour
 {
     public GameObject[] Descriptions;
     private List<int> DescriptionNumbers = new List<int>();
+    private List<int> CrimNumbers = new List<int>();
+    Timer time;
     public Vector3 spawnpoint;
- 
+
+    public Vector3[] CrimSpawns;
     void Start()
     {
+        time = GetComponent<Timer>();
+        SpawnCrims();
         MakeList();
         Check();
     }
@@ -21,14 +26,34 @@ public class DescSpawner : MonoBehaviour
         
     }
 
+    void SpawnCrims()
+    {
+        EnemySpawnHolder holder = GameObject.FindGameObjectWithTag("Holder").GetComponent<EnemySpawnHolder>();
+        int SpawnCount = 0;
+        while(CrimNumbers.Count != 20)
+        {
+            int Qnum = Random.Range(0, holder.criminals.Length);
+            if(CrimNumbers.Contains(Qnum) == false)
+            {
+                CrimNumbers.Add(Qnum);
+            }
+        }
+        while(SpawnCount != 20)
+        {
+            Instantiate(holder.criminals[CrimNumbers[SpawnCount]], CrimSpawns[SpawnCount], Quaternion.identity);
+            SpawnCount += 1;
+        }
+    
+    }
+    
     void MakeList()
     {
         while(DescriptionNumbers.Count != 20)
         {
-            int Qnum = Random.Range(0, Descriptions.Length);
-            if(DescriptionNumbers.Contains(Qnum) == false)
+            int Qnum = Random.Range(0, 20);
+            if(DescriptionNumbers.Contains(CrimNumbers[Qnum]) == false)
             {
-                DescriptionNumbers.Add(Qnum);
+                DescriptionNumbers.Add(CrimNumbers[Qnum]);
             }
         }
     }
@@ -37,7 +62,7 @@ public class DescSpawner : MonoBehaviour
     {
         if(DescriptionNumbers.Count == 0)
         {
-            Debug.Log("You win");
+            time.StopTime();
         }
         else
         {
