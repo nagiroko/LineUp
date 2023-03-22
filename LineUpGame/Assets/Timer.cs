@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Timer : MonoBehaviour
 {
     int seconds;
     int minutes;
     bool time = true;
+    UiBehavior ui;
     void Start()
     {
         StartCoroutine(RecordTime());
+        ui = GameObject.FindGameObjectWithTag("Ui").GetComponent<UiBehavior>();
     }
 
     // Update is called once per frame
@@ -35,6 +38,6 @@ public class Timer : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("It took you" + minutes.ToString() + "minutes and" + seconds.ToString() + "seconds to match all descriptions with their respective criminals");
+        ui.score(minutes, seconds);
     }
 }
