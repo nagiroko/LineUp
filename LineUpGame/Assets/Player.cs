@@ -5,10 +5,22 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Camera cam;
+    public bool OnTheClock = false;
     bool equal = false;
+    public int score = 0;
+    UiBehavior ui;
     void Start()
     {
         cam = Camera.main;
+        ui = GameObject.FindGameObjectWithTag("Ui").GetComponent<UiBehavior>();
+        if(OnTheClock == true)
+        {
+            ui.timer.SetActive(true);
+        }
+        else
+        {
+            ui.timer.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -25,17 +37,34 @@ public class Player : MonoBehaviour
                 {
                     Criminal c = hit.collider.GetComponent<Criminal>();
                     Description d = GameObject.FindGameObjectWithTag("Description").GetComponent<Description>();
+                    DescSpawner spawn = GameObject.FindGameObjectWithTag("Spawner").GetComponent<DescSpawner>();
                     Check(c.CrimNum,d.DescriptNum);
                     if(equal == true)
                     {
                         Destroy(hit.collider.gameObject);
                         Destroy(d.gameObject);
-                        DescSpawner spawn = GameObject.FindGameObjectWithTag("Spawner").GetComponent<DescSpawner>();
-                        spawn.Check();
+                        if(OnTheClock == false)
+                        {
+                            spawn.Check();
+                        }
+                        else
+                        {
+                            score += 1;
+                            spawn.clean();
+                            spawn.WorkLoad();
+                            ui.TimeReset();
+
+                        }
                         equal = false;
                     }
                     else
                     {
+                        if(OnTheClock == true)
+                        {
+                            spawn.clean();
+                            ui.timer.SetActive(false);
+                            ui.score(score, 0, true);
+                        }
                         Debug.Log("Not Eqal");
                     }
                 }

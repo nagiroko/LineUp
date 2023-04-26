@@ -38,6 +38,6 @@ public class Timer : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
-        ui.score(minutes, seconds);
+        ui.score(minutes, seconds,false);
     }
 }
