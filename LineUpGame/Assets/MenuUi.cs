@@ -6,6 +6,8 @@ using UnityEngine;
 public class MenuUi : MonoBehaviour
 {
     // Start is called before the first frame update
+    public Animator ani;
+    int scene;
     void Start()
     {
         
@@ -19,16 +21,28 @@ public class MenuUi : MonoBehaviour
 
     public void  StartAcademy()
     {
-        SceneManager.LoadScene(2);
+        ani.Play("Closing");
+        scene = 2;
+        StartCoroutine(LoadLevel());
     }
 
     public void OnTheClock()
     {
-        SceneManager.LoadScene(1);
+        ani.Play("Closing");
+        scene = 1;
+        StartCoroutine(LoadLevel());
     }
 
     public void Endgame()
     {
         Application.Quit();
     }
+    IEnumerator LoadLevel()
+    {
+        yield return new WaitForSeconds(1);
+        ani.Play("Opening");
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(scene);
+    }
+
 }
